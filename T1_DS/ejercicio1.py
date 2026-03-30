@@ -50,6 +50,7 @@ print(calcular_maximo(notas))
 # 1.B
 # Ordenamiento Bubble Sort
 
+#Implementa una función de ordenamiento sin usar sorted() ni .sort():
 #Ordena con Bubble sort . No modifica la original. Soporta orden ascendente y descendente
 
 def bubble_Sort(datos, descendente=False):
@@ -70,6 +71,7 @@ print(bubble_Sort(notas, descendente=True))
 # 1.C
 # Mediana y Desviación Estándar
 
+#Usando las funciones anteriores, implementa:
 #Usa bubble_sort para ordenar, luego calcula la mediana.
 def calcular_mediana(datos):
     datos_ordenados=bubble_Sort(datos)
@@ -98,13 +100,14 @@ print(calcular_desviacion_estandar(notas))
 # 1.D
 # Conversión de Temperaturas
 
+# Usando las funciones anteriores, implementa:
 # Convierte lista de Celsius a Fahrenheit. Retorna nueva lista
 # Datos: grados_c = [0, 15, 25, 30, 100]
 
 def celsius_a_fahrenheit(grados_c):
     grados_f=[]
-    for c in grados_c:
-        f=c*9/5+32
+    for celsius in grados_c:
+        f=celsius*9/5+32
         grados_f.append(f)
     return grados_f
 
