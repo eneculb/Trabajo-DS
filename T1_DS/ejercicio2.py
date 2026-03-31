@@ -55,9 +55,12 @@ def calcular_maximo(datos):
             maximo=numero
     return maximo
 
+# 2.A
+# Reporte de rendimiento
+
 #Recibe un dict con clave 'notas' y retorna su promedio
-def promedio_estudiantes(estudiantes):
-    return calcular_promedio(estudiantes["notas"])
+def promedio_estudiante(estudiante):
+    return calcular_promedio(estudiante["notas"])
 
 #Retorna: Reprobado (<4.0), Suficiente (4.0-4.9), Aprobado (5.0-5.9), Destacado (>=6.0)
 def clasificar_rendimiento(promedio):
@@ -70,15 +73,13 @@ def clasificar_rendimiento(promedio):
     else:
         return "Destacado"
 
-# 2.A
-# Reporte de rendimiento
 #Retorna lista de dicts: nombre, promedio, estado, nota_max, nota_min, rango
 def generar_reporte(estudiantes):
     reporte=[]
     for estudiante in estudiantes:
         nombre=estudiante["nombre"]
         notas=estudiante["notas"]
-        promedio=calcular_promedio(notas)
+        promedio=promedio_estudiante(estudiante)
         estado=clasificar_rendimiento(promedio)
         nota_max=calcular_maximo(notas)
         nota_min=calcular_minimo(notas)
@@ -94,20 +95,10 @@ def generar_reporte(estudiantes):
         })
     return reporte
 
-print(promedio_estudiantes(estudiantes[0]))
-
-print(clasificar_rendimiento(promedio_estudiantes(estudiantes[0])))
-
-reporte = generar_reporte(estudiantes)
-
-for item in reporte:
-    print(item)
-
 # 2.B
 # Conteo y filtrado
 
 #Dict con cantidad por estado
-
 def contar_por_estado(reporte):
     conteo={
         "Reprobado":0,
@@ -115,92 +106,166 @@ def contar_por_estado(reporte):
         "Aprobado":0,
         "Destacado":0
     }
-    for item in reporte:
-        estado=item["estado"]
+    for estudiante in reporte:
+        estado=estudiante["estado"]
         conteo[estado]+=1
     return conteo
-print(contar_por_estado(reporte))
 
 #Lista de estudiantes con el estado dado
-
 def filtrar_por_estado(reporte, estado):
     filtrados=[]
-    for item in reporte:
-        if item["estado"]==estado:
-            filtrados.append(item)
+    for estudiante in reporte:
+        if estudiante["estado"]==estado:
+            filtrados.append(estudiante)
     return filtrados
-print(filtrar_por_estado(reporte, "Destacado"))
 
 # 2.C
 # Ordenamiento del reporte
 
 #Ordena por cualquier clave numérica con Bubble Sort
-def ordenar_reporte(reporte,clave="promedio", descendente=True):
-    copia=[]
+def ordenar_reporte(reporte, clave='promedio', descendente=True):
+    copia = []
     for item in reporte:
         copia.append(item)
-
     n=len(copia)
 
-    for i in range(n):
-        for j in range(0, n-i-1):
+    for iteracion in range(n):
+        for posicion in range(0, n-1-iteracion):
             if descendente:
-                if copia[j][clave]<copia[j+1][clave]:
-                    aux=copia[j]
-                    copia[j]=copia[j+1]
-                    copia[j+1]=aux
+                if copia[posicion][clave]<copia[posicion+1][clave]:
+                    aux = copia[posicion]
+                    copia[posicion] = copia[posicion+1]
+                    copia[posicion+1] = aux
             else:
-                if copia[j][clave]>copia[j+1][clave]:
-                    aux=copia[j]
-                    copia[j]=copia[j+1]
-                    copia[j+1]=aux
-    return copia
-print(ordenar_reporte(reporte, clave="promedio", descendente=True))
+                if copia[posicion][clave]>copia[posicion+1][clave]:
+                    aux = copia[posicion]
+                    copia[posicion] = copia[posicion+1]
+                    copia[posicion+1] = aux
 
+    return copia
 
 # "2.D BUSQUEDA POR ESTUDIANTES":
-#busca un estudiante por su nombre (sin importar que hayan mayúsculas o minúsculas)
-def buscar_estudiante(estudiantes, nombre):
-    for estudiante in estudiantes:
-        
-        # comparo los nombres en minúscula
-        if estudiante["nombre"].lower()==nombre.lower():
-            return estudiante
-    
-    # si no lo encuentra, despliega en pantalla el siguiente mensaje al usuario
-    return "El nombre del estudiante ingresado no existe, por favor ingrese uno válido"
-    
+#busca un estudiante por su nombre
 
-# "2.E ANÁLISIS DE CONSISTENCIA":
-# busca al estudiante con notas "más parecidas" (estables)
-# y el con notas "muy distintas entre si" (menos estable)
-def analizar_consistencia(reporte):
-    
-    # primero tomo el primero como referencia
-    mas_estable=reporte[0]
-    menos_estable=reporte[0]
-    
-    # recorro toda la lista de estudiantes
+#Búsqueda case-insensitive. Retorna dict o None
+def buscar_estudiante(reporte, nombre):
+    nombre = nombre.lower()
     for estudiante in reporte:
-        
-        # saco el rango (diferencia entre nota max y min)
-        rango=estudiante["rango"]
-        
-        # si encuentra uno con menor rango, se guarda
-        if rango<mas_estable["rango"]:
-            mas_estable=estudiante
-        
-        # si encuentra uno con mayor rango, se guarda
-        if rango>menos_estable["rango"]:
-            menos_estable=estudiante
-    
-    # se retornan ambos resultados
-    return mas_estable, menos_estable
+        if estudiante["nombre"].lower() == nombre:
+            return estudiante
+    return None
+
+#Estudiantes con promedio en [minimo, maximo].
+def buscar_por_rango_promedio(reporte, minimo, maximo):
+    encontrados=[]
+    for estudiante in reporte:
+        if minimo<=estudiante["promedio"]<=maximo:
+            encontrados.append(estudiante)
+    return encontrados
+
+#2.E
+#Análisis de consistencia
+
+#Identifica al estudiante más consistente (menor rango entre nota máxima y mínima) y al más
+#inconsistente (mayor rango). Imprime el reporte completo con formato de tabla.
+
+def analizar_consistencia(reporte):
+    if len(reporte)==0:
+        print("No hay estudiantes en el reporte.")
+        return
+
+    mas_consistente=reporte[0]
+    mas_inconsistente=reporte[0]
+
+    for estudiante in reporte:
+        if estudiante["rango"]<mas_consistente["rango"]:
+            mas_consistente = estudiante
+        if estudiante["rango"]>mas_inconsistente["rango"]:
+            mas_inconsistente=estudiante
+
+    print("Estudiante más consistente:")
+    print(mas_consistente)
+    print("\nEstudiante más inconsistente:")
+    print(mas_inconsistente)
 
 
-# finalmente se utiliza la función y despliega en pantalla los resultados
-estable, inestable=analizar_consistencia(reporte)
+#profe aqui le edimos ayuda a la ia pa que quedara mas bonito :D
+def imprimir_titulo(texto):
+    """Imprime un título decorado."""
+    print("\n" + "=" * 60)
+    print(texto)
+    print("=" * 60)
 
-print("El estudiante con mayor estabilidad es:", estable["nombre"])
-print("El estudiante con menor estabilidad es:", inestable["nombre"])
 
+def imprimir_reporte_tabla(reporte):
+    """Imprime el reporte completo en formato de tabla."""
+    print(f"{'Nombre':<12} {'Promedio':<10} {'Estado':<12} {'Máx':<6} {'Mín':<6} {'Rango':<6}")
+    print("-" * 60)
+
+    for estudiante in reporte:
+        print(f"{estudiante['nombre']:<12} "
+              f"{estudiante['promedio']:<10.2f} "
+              f"{estudiante['estado']:<12} "
+              f"{estudiante['nota_max']:<6.1f} "
+              f"{estudiante['nota_min']:<6.1f} "
+              f"{estudiante['rango']:<6.1f}")
+
+
+def imprimir_lista_reporte(lista):
+    """Imprime una lista de estudiantes del reporte en formato resumido."""
+    if len(lista) == 0:
+        print("No se encontraron estudiantes.")
+        return
+
+    for estudiante in lista:
+        print(f"- {estudiante['nombre']} | Promedio: {estudiante['promedio']:.2f} | "
+              f"Estado: {estudiante['estado']} | Rango: {estudiante['rango']:.1f}")
+
+
+def imprimir_estudiante_original(estudiante):
+    """Imprime un estudiante del listado original."""
+    if estudiante is None:
+        print("No se encontró el estudiante.")
+    else:
+        print(f"Nombre: {estudiante['nombre']} | Notas: {estudiante['notas']}")
+
+
+# menu
+reporte = generar_reporte(estudiantes)
+
+imprimir_titulo("2.A REPORTE DE RENDIMIENTO")
+imprimir_reporte_tabla(reporte)
+
+imprimir_titulo("PROMEDIO Y CLASIFICACION DE ANA")
+print("Promedio de Ana:", round(promedio_estudiante(estudiantes[0]), 2))
+print("Clasificación de Ana:", clasificar_rendimiento(promedio_estudiante(estudiantes[0])))
+
+imprimir_titulo("2.B CONTEO POR ESTADO")
+conteo = contar_por_estado(reporte)
+for estado in conteo:
+    print(f"{estado}: {conteo[estado]}")
+
+imprimir_titulo("2.B FILTRAR POR ESTADO: DESTACADO")
+destacados = filtrar_por_estado(reporte, "Destacado")
+imprimir_lista_reporte(destacados)
+
+imprimir_titulo("2.C ORDENAR REPORTE POR PROMEDIO DESCENDENTE")
+ordenado_promedio = ordenar_reporte(reporte, clave="promedio", descendente=True)
+imprimir_reporte_tabla(ordenado_promedio)
+
+imprimir_titulo("2.D BUSQUEDA DE ESTUDIANTE")
+print("Buscar 'ana':")
+imprimir_estudiante_original(buscar_estudiante(estudiantes, "ana"))
+
+print("\nBuscar 'ANA':")
+imprimir_estudiante_original(buscar_estudiante(estudiantes, "ANA"))
+
+print("\nBuscar 'no existe':")
+imprimir_estudiante_original(buscar_estudiante(estudiantes, "no existe"))
+
+imprimir_titulo("2.D BUSQUEDA POR RANGO DE PROMEDIO [5.0 - 6.0]")
+en_rango = buscar_por_rango_promedio(reporte, 5.0, 6.0)
+imprimir_lista_reporte(en_rango)
+
+imprimir_titulo("2.E ANALISIS DE CONSISTENCIA")
+analizar_consistencia(reporte)
