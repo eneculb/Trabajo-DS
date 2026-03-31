@@ -159,7 +159,6 @@ print(ordenar_reporte(reporte, clave="promedio", descendente=True))
 
 
 # "2.D BUSQUEDA POR ESTUDIANTES":
-
 #busca un estudiante por su nombre (sin importar que hayan mayúsculas o minúsculas)
 def buscar_estudiante(estudiantes, nombre):
     for estudiante in estudiantes:
@@ -170,6 +169,38 @@ def buscar_estudiante(estudiantes, nombre):
     
     # si no lo encuentra, despliega en pantalla el siguiente mensaje al usuario
     return "El nombre del estudiante ingresado no existe, por favor ingrese uno válido"
+    
+
+# "2.E ANÁLISIS DE CONSISTENCIA":
+# busca al estudiante con notas "más parecidas" (estables)
+# y el con notas "muy distintas entre si" (menos estable)
+def analizar_consistencia(reporte):
+    
+    # primero tomo el primero como referencia
+    mas_estable = reporte[0]
+    menos_estable = reporte[0]
+    
+    # recorro toda la lista de estudiantes
+    for estudiante in reporte:
+        
+        # saco el rango (diferencia entre nota max y min)
+        rango = estudiante["rango"]
+        
+        # si encuentra uno con menor rango, se guarda
+        if rango < mas_estable["rango"]:
+            mas_estable = estudiante
+        
+        # si encuentra uno con mayor rango, se guarda
+        if rango > menos_estable["rango"]:
+            menos_estable = estudiante
+    
+    # se retornan ambos resultados
+    return mas_estable, menos_estable
 
 
+# finalmente se utiliza la función y despliega en pantalla los resultados
+estable, inestable = analizar_consistencia(reporte)
+
+print("El estudiante con mayor estabilidad es:", estable["nombre"])
+print("El estudiante con menor estabilidad es:", inestable["nombre"])
 
