@@ -9,7 +9,6 @@ def calcular_suma(datos):
     return suma
 
 notas=[5.0, 6.5, 7.0, 5.5, 4.0]
-print(calcular_suma(notas))
 
 #retorna la cantidad sin usar len()
 def calcular_largo(datos):
@@ -17,7 +16,6 @@ def calcular_largo(datos):
     for numero in datos:
         largo+=1
     return largo
-print(calcular_largo(notas))
 
 #usa calcular_suma y calcular_largo
 def calcular_promedio(datos):
@@ -28,7 +26,6 @@ def calcular_promedio(datos):
         return promedio
     else:
         return 0
-print(calcular_promedio(notas))
 
 #recorre la lista para encontrar el mínimo
 def calcular_minimo(datos):
@@ -37,7 +34,6 @@ def calcular_minimo(datos):
         if numero<minimo:
             minimo=numero
     return minimo
-print(calcular_minimo(notas))
 
 def calcular_maximo(datos):
     maximo = datos[0]
@@ -45,7 +41,6 @@ def calcular_maximo(datos):
         if numero>maximo:
             maximo=numero
     return maximo
-print(calcular_maximo(notas))
 
 # 1.B
 # Ordenamiento Bubble Sort
@@ -53,35 +48,37 @@ print(calcular_maximo(notas))
 #Implementa una función de ordenamiento sin usar sorted() ni .sort():
 #Ordena con Bubble sort . No modifica la original. Soporta orden ascendente y descendente
 
-def bubble_Sort(datos, descendente=False):
-    datos=datos.copy()
-    n=calcular_largo(datos)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if (descendente and datos[j]<datos[j+1]) or (not descendente and datos[j]>datos[j+1]):
-                # Intercambiar
-                datos[j], datos[j+1] = datos[j+1], datos[j]
-    return datos
+def bubble_sort(datos, descendente=False):
+    copia = datos.copy()
+    n = calcular_largo(copia)
 
-print("Orden ascendente:")
-print(bubble_Sort(notas))
-print("Orden descendente:")
-print(bubble_Sort(notas, descendente=True))
+    for iteracion in range(n):
+        for posicion in range(0, n-1-iteracion):
+            if descendente:
+                if copia[posicion]<copia[posicion+1]:
+                    aux=copia[posicion]
+                    copia[posicion]=copia[posicion+1]
+                    copia[posicion+1]=aux
+                else:
+                    if copia[posicion]>copia[posicion+1]:
+                        aux=copia[posicion]
+                        copia[posicion]=copia[posicion+1]
+                        copia[posicion+1]=aux
 
-# 1.C
+    return copia
+
+# 1.C 
 # Mediana y Desviación Estándar
 
 #Usando las funciones anteriores, implementa:
 #Usa bubble_sort para ordenar, luego calcula la mediana.
 def calcular_mediana(datos):
-    datos_ordenados=bubble_Sort(datos)
+    datos_ordenados=bubble_sort(datos)
     n=calcular_largo(datos_ordenados)
     if n%2==1:
         return datos_ordenados[n//2]
     else:
-        return (datos_ordenados[n//2 - 1] + datos_ordenados[n//2]) / 2
-    
-print(calcular_mediana(notas))
+        return (datos_ordenados[n//2-1]+datos_ordenados[n//2])/2
 
 #Desviación estándar poblacional: sqrt(sum((x-prom)²)/n)
 def calcular_desviacion_estandar(datos):
@@ -94,8 +91,6 @@ def calcular_desviacion_estandar(datos):
         return (suma_cuadrados/n)**0.5
     else:
         return 0
-    
-print(calcular_desviacion_estandar(notas))
 
 # 1.D
 # Conversión de Temperaturas
@@ -112,7 +107,6 @@ def celsius_a_fahrenheit(grados_c):
     return grados_f
 
 grados_c = [0, 15, 25, 30, 100]
-print(celsius_a_fahrenheit(grados_c))
 
 # 1.E
 # Reporte Estadístico Integrado
@@ -128,14 +122,63 @@ ciudades = [
 ]
 
 
-for ciudad in ciudades:
-    temp=ciudad["temperaturas"]
-    print(f"Reporte para {ciudad['ciudad']}:")
-    print(f"  Promedio: {calcular_promedio(temp):.2f}°C")
-    print(f"  Mínimo: {calcular_minimo(temp):.2f}°C")
-    print(f"  Máximo: {calcular_maximo(temp):.2f}°C")
-    print()
+def imprimir_titulo(texto):
+    """Imprime un título decorado."""
+    print("\n" + "=" * 60)
+    print(texto)
+    print("=" * 60)
 
 
+def imprimir_lista(datos):
+    """Imprime una lista en una sola línea."""
+    print(datos)
 
 
+def imprimir_reporte_ciudades(ciudades):
+    """Imprime reporte estadístico por ciudad."""
+    print(f"{'Ciudad':<15} {'Promedio':<12} {'Mínimo':<12} {'Máximo':<12}")
+    print("-" * 55)
+
+    for ciudad in ciudades:
+        temperaturas = ciudad["temperaturas"]
+        promedio = calcular_promedio(temperaturas)
+        minimo = calcular_minimo(temperaturas)
+        maximo = calcular_maximo(temperaturas)
+
+        print(f"{ciudad['ciudad']:<15} "
+              f"{promedio:<12.2f} "
+              f"{minimo:<12.2f} "
+              f"{maximo:<12.2f}")
+
+#################################################################
+#menu
+#################################################################
+
+imprimir_titulo("1.A Funciones basicas")
+print("Lista de notas:", notas)
+print("Suma:", calcular_suma(notas))
+print("Largo:", calcular_largo(notas))
+print("Promedio:", round(calcular_promedio(notas), 2))
+print("Mínimo:", calcular_minimo(notas))
+print("Máximo:", calcular_maximo(notas))
+
+imprimir_titulo("1.B Ordenamiento Bubble Sort")
+print("Orden ascendente:")
+imprimir_lista(bubble_sort(notas))
+
+print("Orden descendente:")
+imprimir_lista(bubble_sort(notas, descendente=True))
+
+print("Lista original (sin modificar):")
+imprimir_lista(notas)
+
+imprimir_titulo("1.C Mediana y Desviación Estándar")
+print("Mediana:", calcular_mediana(notas))
+print("Desviación estándar:", round(calcular_desviacion_estandar(notas), 4))
+
+imprimir_titulo("1.D Conversión de Temperaturas")
+print("Grados Celsius:", grados_c)
+print("Grados Fahrenheit:", celsius_a_fahrenheit(grados_c))
+
+imprimir_titulo("1.E Reporte Estadístico Integrado")
+imprimir_reporte_ciudades(ciudades)
