@@ -154,17 +154,21 @@ print("\nDiversidad:", round(div, 3))
 
 main()
 
-#3.E
-def calcular_bigramas(texto_limpio)
-palabras = texto limpio.split()
-bigrama = {}
+#3.E : Biagramas
+def calcular_bigramas(texto_limpio):
+    """Saca las palabras consecutivas y cuenta cuantas veces sale cada par."""
+    palabras = texto_limpio.split()
+    bigramas = {}
 
-for i in range(len(palabras) - 1):
-    par = palabra[i] + ""+ palabras[i + 1]
+       # Le resto 1 al largo para que el ciclo no se caiga al buscar la 'palabra siguiente' en la ultima vuelta
+         for i in range(len(palabras) - 1):
+        
+        # Junto la palabra actual con la que viene despues
+        par = palabras[i] + " " + palabras[i + 1]
 
-    if par not in bigrama:
+    if par not in bigramas:
         bigramas[par] = 0
+            
+        bigramas[par] += 1
 
-    bigramas[par] += 1
-
-return bigramas
+    return bigramas
