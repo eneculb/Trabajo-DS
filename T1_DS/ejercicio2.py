@@ -158,7 +158,7 @@ def ordenar_reporte(reporte,clave="promedio", descendente=True):
 print(ordenar_reporte(reporte, clave="promedio", descendente=True))
 
 
-# 2.D "Busqueda de estudiantes":
+# "2.D BUSQUEDA POR ESTUDIANTES":
 
 #busca un estudiante por su nombre (sin importar que hayan mayúsculas o minúsculas)
 def buscar_estudiante(estudiantes, nombre):
