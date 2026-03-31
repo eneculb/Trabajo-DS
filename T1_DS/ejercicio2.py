@@ -177,29 +177,29 @@ def buscar_estudiante(estudiantes, nombre):
 def analizar_consistencia(reporte):
     
     # primero tomo el primero como referencia
-    mas_estable = reporte[0]
-    menos_estable = reporte[0]
+    mas_estable=reporte[0]
+    menos_estable=reporte[0]
     
     # recorro toda la lista de estudiantes
     for estudiante in reporte:
         
         # saco el rango (diferencia entre nota max y min)
-        rango = estudiante["rango"]
+        rango=estudiante["rango"]
         
         # si encuentra uno con menor rango, se guarda
         if rango < mas_estable["rango"]:
-            mas_estable = estudiante
+            mas_estable=estudiante
         
         # si encuentra uno con mayor rango, se guarda
         if rango > menos_estable["rango"]:
-            menos_estable = estudiante
+            menos_estable=estudiante
     
     # se retornan ambos resultados
     return mas_estable, menos_estable
 
 
 # finalmente se utiliza la función y despliega en pantalla los resultados
-estable, inestable = analizar_consistencia(reporte)
+estable, inestable=analizar_consistencia(reporte)
 
 print("El estudiante con mayor estabilidad es:", estable["nombre"])
 print("El estudiante con menor estabilidad es:", inestable["nombre"])
