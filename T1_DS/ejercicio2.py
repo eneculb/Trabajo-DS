@@ -164,7 +164,7 @@ def buscar_estudiante(estudiantes, nombre):
     for estudiante in estudiantes:
         
         # comparo los nombres en minúscula
-        if estudiante["nombre"].lower() == nombre.lower():
+        if estudiante["nombre"].lower()==nombre.lower():
             return estudiante
     
     # si no lo encuentra, despliega en pantalla el siguiente mensaje al usuario
@@ -187,11 +187,11 @@ def analizar_consistencia(reporte):
         rango=estudiante["rango"]
         
         # si encuentra uno con menor rango, se guarda
-        if rango < mas_estable["rango"]:
+        if rango<mas_estable["rango"]:
             mas_estable=estudiante
         
         # si encuentra uno con mayor rango, se guarda
-        if rango > menos_estable["rango"]:
+        if rango>menos_estable["rango"]:
             menos_estable=estudiante
     
     # se retornan ambos resultados
