@@ -87,3 +87,84 @@ tramos = clasificar_tramos(estudiantes)
 print(f"\n Clasificacion por tramos:\n")
 for tramo, cantidad in tramos.items():
     print(f"  {tramo}: {cantidad} notas")
+
+
+#3.D: 
+def limpiar_texto(texto):
+    texto = texto.lower()
+    texto_limpio = ""
+    for caracter in texto:
+        if caracter not in ".,;:¿?¡!\n":
+            texto_limpio += caracter
+        else:
+            texto limpio += ""
+
+return texto_limpio
+
+def frecuencia_palabras(texto_limpio):
+    palabras = texto_limpio.split()
+    frecuencias = {}
+
+    for palabra in palabras:
+        if palabra in frecuencias:
+            frecuencias[palabras] += 1
+        if palabra not in conteo:
+            conteo[palabra] = 0
+        conteo[palabra] += 1
+    return frecuencias
+
+def top_n_palabras(frecuencias, n=10):
+    lista = []
+    for palabras in frecuencias:
+        lista.append((palabra, frecuencia[palabra]))
+
+    for i in range(len(lista)):
+        for j in range(i + 1, len(lista)):
+        if lista[j][1] > lista[i][1]:
+            lista[i], lista[j] = lista[j], lista[i]
+     
+    return lista[:n]
+
+def diversidad_lexica(texto_limpio):
+    palabras = texto_limpio.split()
+
+    total = len(palabras)
+
+   unicas = []
+
+for p in palabras:
+    if p not in unicas:
+        unicas.append(p)
+
+cantidad_unicas = len(unicas)
+
+return cantidad_ unicas / total
+
+def main():
+    texto_limpio = limpiar_texto(texto)
+    frec = frecuencia_palabra(texto_limpio)
+    top = top_n_palabras(frec, 5)
+    diversidad = diversidad_lexica(texto_limpio)
+
+print("Top palabras:")
+for palabra, cantidad in top:
+    print(palabra, "->", cantidad)
+
+print("\nDiversidad:", round(div, 3))
+
+main()
+
+#3.E
+def calcular_bigramas(texto_limpio)
+palabras = texto limpio.split()
+bigrama = {}
+
+for i in range(len(palabras) - 1):
+    par = palabra[i] + ""+ palabras[i + 1]
+
+    if par not in bigrama:
+        bigramas[par] = 0
+
+    bigramas[par] += 1
+
+return bigramas
