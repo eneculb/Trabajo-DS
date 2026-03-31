@@ -71,22 +71,32 @@ def generar_histograma(frecuencia, ancho_max=25):
 generar_histograma(frecuencia)
 
 # 3c: Clasificación de desempeño por tramos
-def clasificar_tramos(estudiantes):
-    tramos = {"1.0-3.9": 0, "4.0-5.9": 0, "6.0-7.0": 0}
-    for estudiante in estudiantes:
-        for nota in estudiante["notas"]:
-            if 1.0 <= nota <= 3.9:
-                tramos["1.0-3.9"] += 1
-            elif 4.0 <= nota <= 5.9:
-                tramos["4.0-5.9"] += 1
-            elif 6.0 <= nota <= 7.0:
-                tramos["6.0-7.0"] += 1
-    return tramos
+def clasificar_tramos(datos, tramos):
+    # Primero armamos un diccionario con los tramos en cero
+    resultado = {}
+    for nombre_tramo in tramos:
+        resultado[nombre_tramo] = 0
+    # Ahora revisamos cada nota
+    for nota in datos:
+        for nombre_tramo in tramos:
+            minimo = tramos[nombre_tramo][0]
+            maximo = tramos[nombre_tramo][1]
+            
+            if minimo <= nota <= maximo:
+                resultado[nombre_tramo] += 1
+                
+    return resultado
+diccionario_tramos = {
+    "1.0-3.9": (1.0, 3.9), 
+    "4.0-5.9": (4.0, 5.9), 
+    "6.0-7.0": (6.0, 7.0)
+    }
 
-tramos = clasificar_tramos(estudiantes)
-print(f"\n Clasificacion por tramos:\n")
-for tramo, cantidad in tramos.items():
-    print(f"  {tramo}: {cantidad} notas")
+tramos_listos = clasificar_tramos(notas, diccionario_tramos)
+
+print("\n Clasificacion por tramos:")
+    for tramo in tramos_listos:
+    print(f"  {tramo}: {tramos_listos[tramo]} notas")
 
 
 #3.D: 
@@ -156,14 +166,13 @@ main()
 
 #3.E : Biagramas
 def calcular_bigramas(texto_limpio):
-    """Saca las palabras consecutivas y cuenta cuantas veces sale cada par."""
+
     palabras = texto_limpio.split()
     bigramas = {}
-
-       # Le resto 1 al largo para que el ciclo no se caiga al buscar la 'palabra siguiente' en la ultima vuelta
+         # Le resto 1 al largo para que el ciclo no se caiga al buscar la 'palabra siguiente' en la ultima vuelta
          for i in range(len(palabras) - 1):
         
-        # Junto la palabra actual con la que viene despues
+         # Junto la palabra actual con la que viene despues
         par = palabras[i] + " " + palabras[i + 1]
 
     if par not in bigramas:
