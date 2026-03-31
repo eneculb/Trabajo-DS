@@ -158,3 +158,18 @@ def ordenar_reporte(reporte,clave="promedio", descendente=True):
 print(ordenar_reporte(reporte, clave="promedio", descendente=True))
 
 
+# 2.D "Busqueda de estudiantes":
+
+#busca un estudiante por su nombre (sin importar que hayan mayúsculas o minúsculas)
+def buscar_estudiante(estudiantes, nombre):
+    for estudiante in estudiantes:
+        
+        # comparo los nombres en minúscula
+        if estudiante["nombre"].lower() == nombre.lower():
+            return estudiante
+    
+    # si no lo encuentra, despliega en pantalla el siguiente mensaje al usuario
+    return "El nombre del estudiante ingresado no existe, por favor ingrese uno válido"
+
+
+
