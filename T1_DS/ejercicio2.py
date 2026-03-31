@@ -103,3 +103,58 @@ reporte = generar_reporte(estudiantes)
 for item in reporte:
     print(item)
 
+# 2.B
+# Conteo y filtrado
+
+#Dict con cantidad por estado
+
+def contar_por_estado(reporte):
+    conteo={
+        "Reprobado":0,
+        "Suficiente":0,
+        "Aprobado":0,
+        "Destacado":0
+    }
+    for item in reporte:
+        estado=item["estado"]
+        conteo[estado]+=1
+    return conteo
+print(contar_por_estado(reporte))
+
+#Lista de estudiantes con el estado dado
+
+def filtrar_por_estado(reporte, estado):
+    filtrados=[]
+    for item in reporte:
+        if item["estado"]==estado:
+            filtrados.append(item)
+    return filtrados
+print(filtrar_por_estado(reporte, "Destacado"))
+
+# 2.C
+# Ordenamiento del reporte
+
+#Ordena por cualquier clave numérica con Bubble Sort
+def ordenar_reporte(reporte,clave="promedio", descendente=True):
+    copia=[]
+    for item in reporte:
+        copia.append(item)
+
+    n=len(copia)
+
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if descendente:
+                if copia[j][clave]<copia[j+1][clave]:
+                    aux=copia[j]
+                    copia[j]=copia[j+1]
+                    copia[j+1]=aux
+            else:
+                if copia[j][clave]>copia[j+1][clave]:
+                    aux=copia[j]
+                    copia[j]=copia[j+1]
+                    copia[j+1]=aux
+    return copia
+print(ordenar_reporte(reporte, clave="promedio", descendente=True))
+
+
